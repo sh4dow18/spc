@@ -1,20 +1,7 @@
 from sys import argv
 from argparse import ArgumentParser
+     
 
-
-def main():
-    parser = ArgumentParser()
-    parser.add_argument("-p", "--polish", help="Operation with Polish Notation")
-    parser.add_argument("-i", "--inverted", help="Operation with Inverted Polish Notation")
-    args = parser.parse_args()
-    if len(argv) == 1:
-        parser.print_help()
-    elif args.polish:
-        polish_calculator(args)
-    elif args.inverted:
-        polish_calculator(args, True)
-        
- 
 def polish_calculator(args, inverted=False):
     stack = []
     expression = None
@@ -43,7 +30,7 @@ def polish_calculator(args, inverted=False):
                 two_digits_number = expression[iterable + 1] + expression[iterable + 2]
             stack.append(int(two_digits_number))
             space = True
-        elif expression[iterable] in ['+', '-', '*', '/']:
+        elif expression[iterable] in ['+', '_', '*', '/']:
             if inverted is False:
                 temp_1 = stack[-1]
             else:
@@ -56,13 +43,26 @@ def polish_calculator(args, inverted=False):
             stack.pop()
             if expression[iterable] == '+':
                 stack.append(temp_1 + temp_2)
-            elif expression[iterable] == '-':
+            elif expression[iterable] == '_':
                 stack.append(temp_1 - temp_2)
             elif expression[iterable] == '*':
                 stack.append(temp_1 * temp_2)
             elif expression[iterable] == '/':
                 stack.append(int(temp_1 / temp_2))
     print("Resultado: {}".format(stack[-1]))
+
+
+def main():
+    parser = ArgumentParser()
+    parser.add_argument("-p", "--polish", help="Operation with Polish Notation")
+    parser.add_argument("-i", "--inverted", help="Operation with Inverted Polish Notation")
+    args = parser.parse_args()
+    if len(argv) == 1:
+        parser.print_help()
+    elif args.polish:
+        polish_calculator(args)
+    elif args.inverted:
+        polish_calculator(args, True)
 
 
 if __name__ == "__main__":
